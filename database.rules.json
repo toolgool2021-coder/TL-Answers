@@ -1,0 +1,14 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "users": {
+      "$uid": {
+        ".read": "auth != null && (auth.uid === $uid || auth.uid === 'dLMJYKdfMoZUMYOablhE8uMn2HB2')",
+        ".write": "auth != null && (auth.uid === 'dLMJYKdfMoZUMYOablhE8uMn2HB2' || (auth.uid === $uid && !data.exists() && newData.child('status').val() === 'pending'))",
+        ".validate": "newData.hasChildren(['name','status']) && newData.child('name').isString() && newData.child('name').val().length <= 80 && (newData.child('status').val() === 'pending' || newData.child('status').val() === 'approved' || newData.child('status').val() === 'rejected' || newData.child('status').val() === 'banned')"
+      },
+      ".read": "auth != null && auth.uid === 'dLMJYKdfMoZUMYOablhE8uMn2HB2'"
+    }
+  }
+}
