@@ -1,0 +1,27 @@
+import assert from 'node:assert/strict';
+import{readFileSync,writeFileSync,mkdtempSync,rmSync}from'node:fs';
+import{tmpdir}from'node:os';
+import{join}from'node:path';
+import{spawnSync}from'node:child_process';
+const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');
+const r=JSON.parse(readFileSync(new URL('../database.rules.json',import.meta.url),'utf8'));
+const owner='dLMJYKdfMoZUMYOablhE8uMn2HB2';
+assert.equal(r.rules['.read'],false);
+assert.equal(r.rules['.write'],false);
+assert.ok(r.rules.posts['.read'].includes('approved'));
+assert.ok(r.rules.posts.$post['.write'].includes(owner));
+assert.ok(r.rules.questions.$uid['.read'].includes('auth.uid === $uid'));
+assert.ok(r.rules.users.$uid.status['.write'].includes(owner));
+assert.ok(r.rules.chat.$slot.$uid['.write'].includes('cooldownMs'));
+assert.ok(r.rules.chat.$slot.$uid['.write'].includes('mutedUntil'));
+assert.ok(r.rules.chat.$slot.$uid['.write'].includes('now'));
+assert.ok(r.rules.chatReactions.$slot.$author.$uid['.write'].includes('auth.uid === $uid'));
+assert.ok(html.includes(owner));
+assert.ok(html.includes('limitToLast'));
+assert.ok(!html.includes('Notification.requestPermission'));
+const match=html.match(/<script type="module">([\s\S]*?)<\/script>/);
+assert.ok(match,'module script missing');
+const dir=mkdtempSync(join(tmpdir(),'tl-answers-'));
+const path=join(dir,'script.mjs');
+try{writeFileSync(path,match[1]);const result=spawnSync(process.execPath,['--check',path],{encoding:'utf8'});assert.equal(result.status,0,result.stderr)}finally{rmSync(dir,{recursive:true,force:true})}
+console.log('TL Answers static smoke checks passed.');
