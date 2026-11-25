@@ -9,6 +9,47 @@
         ".validate": "newData.hasChildren(['name','status']) && newData.child('name').isString() && newData.child('name').val().length <= 80 && (newData.child('status').val() === 'pending' || newData.child('status').val() === 'approved' || newData.child('status').val() === 'rejected' || newData.child('status').val() === 'banned')"
       },
       ".read": "auth != null && auth.uid === 'dLMJYKdfMoZUMYOablhE8uMn2HB2'"
+    },
+    "posts": {
+      ".read": "auth != null && (auth.uid === 'dLMJYKdfMoZUMYOablhE8uMn2HB2' || root.child('users').child(auth.uid).child('status').val() === 'approved')",
+      ".write": "auth != null && auth.uid === 'dLMJYKdfMoZUMYOablhE8uMn2HB2'"
+    },
+    "publicAnswers": {
+      ".read": "auth != null && (auth.uid === 'dLMJYKdfMoZUMYOablhE8uMn2HB2' || root.child('users').child(auth.uid).child('status').val() === 'approved')",
+      ".write": "auth != null && auth.uid === 'dLMJYKdfMoZUMYOablhE8uMn2HB2'"
+    },
+    "questions": {
+      ".read": "auth != null && auth.uid === 'dLMJYKdfMoZUMYOablhE8uMn2HB2'",
+      "$uid": {
+        ".read": "auth != null && (auth.uid === 'dLMJYKdfMoZUMYOablhE8uMn2HB2' || root.child('users').child(auth.uid).child('status').val() === 'approved') && auth.uid === $uid",
+        "$id": {
+          ".write": "(auth != null && auth.uid === 'dLMJYKdfMoZUMYOablhE8uMn2HB2') || (auth != null && (auth.uid === 'dLMJYKdfMoZUMYOablhE8uMn2HB2' || root.child('users').child(auth.uid).child('status').val() === 'approved') && auth.uid === $uid && !data.exists() && newData.exists() && !newData.child('answer').exists())",
+          ".validate": "newData.hasChildren(['text','time']) && newData.child('text').isString() && newData.child('text').val().length <= 1000 && newData.child('time').isNumber()",
+          "text": {},
+          "time": {},
+          "answer": {
+            ".validate": "newData.isString() && newData.val().length <= 4000"
+          },
+          "$other": {
+            ".validate": false
+          }
+        }
+      }
+    },
+    "chat": {
+      ".read": "auth != null && (auth.uid === 'dLMJYKdfMoZUMYOablhE8uMn2HB2' || root.child('users').child(auth.uid).child('status').val() === 'approved')",
+      "$uid": {
+        "$id": {
+          ".write": "auth != null && (auth.uid === 'dLMJYKdfMoZUMYOablhE8uMn2HB2' || root.child('users').child(auth.uid).child('status').val() === 'approved') && auth.uid === $uid && !data.exists() && newData.exists() && $id === (now - now % 5000) + ''",
+          ".validate": "newData.hasChildren(['uid','text','time']) && newData.child('uid').val() === auth.uid && newData.child('text').isString() && newData.child('text').val().length > 0 && newData.child('text').val().length <= 500 && newData.child('time').val() === now",
+          "uid": {},
+          "text": {},
+          "time": {},
+          "$other": {
+            ".validate": false
+          }
+        }
+      }
     }
   }
 }
