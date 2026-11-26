@@ -175,6 +175,26 @@
         ".write": "auth != null && auth.uid === 'dLMJYKdfMoZUMYOablhE8uMn2HB2'",
         ".validate": "newData.val() === 'vip'"
       }
+    },
+    "comments": {
+      ".read": "(auth != null && (auth != null && auth.uid === 'dLMJYKdfMoZUMYOablhE8uMn2HB2' || root.child('users').child(auth.uid).child('status').val() === 'approved')) && (auth != null && auth.uid === 'dLMJYKdfMoZUMYOablhE8uMn2HB2' || root.child('settings').child('maintenance').val() !== true)",
+      "$post": {
+        "$id": {
+          ".write": "(auth != null && auth.uid === 'dLMJYKdfMoZUMYOablhE8uMn2HB2' && !newData.exists()) || (((auth != null && (auth != null && auth.uid === 'dLMJYKdfMoZUMYOablhE8uMn2HB2' || root.child('users').child(auth.uid).child('status').val() === 'approved')) && (auth != null && auth.uid === 'dLMJYKdfMoZUMYOablhE8uMn2HB2' || root.child('settings').child('maintenance').val() !== true)) && ((!data.exists() && newData.child('uid').val() === auth.uid && root.child('posts').child($post).exists()) || (data.child('uid').val() === auth.uid && !newData.exists())))",
+          ".validate": "newData.hasChildren(['uid','name','text','time']) && newData.child('uid').val() === auth.uid && newData.child('time').val() === now",
+          "uid": {},
+          "name": {
+            ".validate": "newData.isString() && newData.val().length <= 80 && (newData.val() === root.child('users').child(auth.uid).child('name').val() || (auth.uid === 'dLMJYKdfMoZUMYOablhE8uMn2HB2' && newData.val() === 'Toolgool'))"
+          },
+          "text": {
+            ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 1000"
+          },
+          "time": {},
+          "$other": {
+            ".validate": false
+          }
+        }
+      }
     }
   }
 }
