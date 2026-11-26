@@ -10,7 +10,8 @@
         ".validate": "newData.hasChildren(['name','status']) && newData.child('name').isString() && newData.child('name').val().length > 0 && newData.child('name').val().length <= 80 && (newData.child('status').val() === 'pending' || newData.child('status').val() === 'approved' || newData.child('status').val() === 'rejected' || newData.child('status').val() === 'banned')",
         "name": {
           ".write": "auth != null && auth.uid === $uid && (auth != null && auth.uid === 'dLMJYKdfMoZUMYOablhE8uMn2HB2' || data.parent().child('status').val() === 'approved')",
-          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 80"
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 80",
+          ".read": "(auth != null && (auth != null && auth.uid === 'dLMJYKdfMoZUMYOablhE8uMn2HB2' || root.child('users').child(auth.uid).child('status').val() === 'approved')) && (data.parent().child('status').val() === 'approved' || $uid === 'dLMJYKdfMoZUMYOablhE8uMn2HB2')"
         },
         "status": {
           ".write": "auth != null && auth.uid === 'dLMJYKdfMoZUMYOablhE8uMn2HB2'",
@@ -18,10 +19,12 @@
         },
         "avatar": {
           ".write": "auth != null && auth.uid === $uid && (auth != null && auth.uid === 'dLMJYKdfMoZUMYOablhE8uMn2HB2' || data.parent().child('status').val() === 'approved')",
-          ".validate": "newData.isString() && (newData.val() === '' || (newData.val().beginsWith('data:image/jpeg;base64,') && newData.val().length <= 120000))"
+          ".validate": "newData.isString() && (newData.val() === '' || (newData.val().beginsWith('data:image/jpeg;base64,') && newData.val().length <= 120000))",
+          ".read": "(auth != null && (auth != null && auth.uid === 'dLMJYKdfMoZUMYOablhE8uMn2HB2' || root.child('users').child(auth.uid).child('status').val() === 'approved')) && (data.parent().child('status').val() === 'approved' || $uid === 'dLMJYKdfMoZUMYOablhE8uMn2HB2')"
         },
         "joinedAt": {
-          ".validate": "newData.isNumber()"
+          ".validate": "newData.isNumber()",
+          ".read": "(auth != null && (auth != null && auth.uid === 'dLMJYKdfMoZUMYOablhE8uMn2HB2' || root.child('users').child(auth.uid).child('status').val() === 'approved')) && (data.parent().child('status').val() === 'approved' || $uid === 'dLMJYKdfMoZUMYOablhE8uMn2HB2')"
         },
         "$other": {
           ".validate": false
@@ -164,6 +167,13 @@
         "$other": {
           ".validate": false
         }
+      }
+    },
+    "badges": {
+      ".read": "auth != null && (auth != null && auth.uid === 'dLMJYKdfMoZUMYOablhE8uMn2HB2' || root.child('users').child(auth.uid).child('status').val() === 'approved')",
+      "$uid": {
+        ".write": "auth != null && auth.uid === 'dLMJYKdfMoZUMYOablhE8uMn2HB2'",
+        ".validate": "newData.val() === 'vip'"
       }
     }
   }
