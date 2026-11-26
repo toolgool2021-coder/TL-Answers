@@ -60,8 +60,12 @@
         "body": {},
         "pinned": {},
         "createdBy": {},
-        "time": {},
-        "updatedAt": {},
+        "time": {
+          ".read": "(auth != null && (auth != null && auth.uid === 'dLMJYKdfMoZUMYOablhE8uMn2HB2' || root.child('users').child(auth.uid).child('status').val() === 'approved')) && (auth != null && auth.uid === 'dLMJYKdfMoZUMYOablhE8uMn2HB2' || root.child('settings').child('maintenance').val() !== true)"
+        },
+        "updatedAt": {
+          ".read": "(auth != null && (auth != null && auth.uid === 'dLMJYKdfMoZUMYOablhE8uMn2HB2' || root.child('users').child(auth.uid).child('status').val() === 'approved')) && (auth != null && auth.uid === 'dLMJYKdfMoZUMYOablhE8uMn2HB2' || root.child('settings').child('maintenance').val() !== true)"
+        },
         "images": {
           "$idx": {
             ".validate": "($idx === '0' || $idx === '1' || $idx === '2' || $idx === '3') && newData.isString() && newData.val().beginsWith('data:image/jpeg;base64,') && newData.val().length <= 210000"
@@ -69,7 +73,8 @@
         },
         "$other": {
           ".validate": false
-        }
+        },
+        ".read": "(auth != null && (auth != null && auth.uid === 'dLMJYKdfMoZUMYOablhE8uMn2HB2' || root.child('users').child(auth.uid).child('status').val() === 'approved')) && (auth != null && auth.uid === 'dLMJYKdfMoZUMYOablhE8uMn2HB2' || root.child('settings').child('maintenance').val() !== true)"
       }
     },
     "saved": {
